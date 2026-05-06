@@ -1,2 +1,0 @@
-# Izinto-Zomoya
-Izintozomoya.tv
