@@ -1,0 +1,787 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Izinto Zomoya — Share Your Story</title>
+
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%230a0a0a'/%3E%3Ccircle cx='32' cy='32' r='23' fill='none' stroke='%23C9922A' stroke-width='4'/%3E%3Ctext x='32' y='39' text-anchor='middle' font-family='Georgia,serif' font-size='19' font-weight='700' fill='%23E8B84B'%3EIZ%3C/text%3E%3C/svg%3E">
+<link rel="apple-touch-icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 180 180'%3E%3Crect width='180' height='180' rx='38' fill='%230a0a0a'/%3E%3Ccircle cx='90' cy='90' r='64' fill='none' stroke='%23C9922A' stroke-width='10'/%3E%3Ctext x='90' y='109' text-anchor='middle' font-family='Georgia,serif' font-size='54' font-weight='700' fill='%23E8B84B'%3EIZ%3C/text%3E%3C/svg%3E">
+
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Playfair+Display:ital,wght@0,700;1,400&family=Barlow:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+<style>
+  :root {
+    --gold: #C9922A;
+    --gold-light: #E8B84B;
+    --gold-dim: #8a6218;
+    --black: #0a0a0a;
+    --dark: #111;
+    --mid: #1a1a1a;
+    --text: #e8e0d4;
+    --muted: #9a8f80;
+  }
+
+  *, *::before, *::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    background: var(--black);
+    color: var(--text);
+    font-family: 'Barlow', sans-serif;
+    font-weight: 300;
+    overflow-x: hidden;
+  }
+
+  /* HERO */
+  .hero {
+    position: relative;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    overflow: hidden;
+  }
+
+  .silhouettes {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    background:
+      radial-gradient(ellipse 50% 75% at 74% 78%, rgba(201,146,42,0.18) 0%, rgba(201,146,42,0.04) 42%, transparent 70%),
+      radial-gradient(ellipse 32% 48% at 20% 78%, rgba(255,255,255,0.05) 0%, transparent 62%),
+      linear-gradient(125deg, #020202 0%, #090806 35%, #1b1205 68%, #050505 100%);
+    filter: brightness(0.75) saturate(0.9);
+  }
+
+  .silhouettes::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background:
+      linear-gradient(to right, rgba(0,0,0,0.88) 0%, rgba(0,0,0,0.6) 50%, rgba(0,0,0,0.3) 100%),
+      linear-gradient(to top, rgba(0,0,0,0.95) 0%, rgba(0,0,0,0.3) 60%, transparent 100%);
+  }
+
+  .silhouettes::after {
+    content: '';
+    position: absolute;
+    right: 5%;
+    bottom: 0;
+    width: 55%;
+    height: 85%;
+    opacity: 0.16;
+    filter: blur(2px);
+    background:
+      radial-gradient(ellipse 7% 9% at 35% 28%, var(--gold) 0%, var(--gold) 99%, transparent 100%),
+      radial-gradient(ellipse 9% 13% at 35% 52%, var(--gold) 0%, var(--gold) 99%, transparent 100%),
+      radial-gradient(ellipse 7% 9% at 56% 22%, var(--gold) 0%, var(--gold) 99%, transparent 100%),
+      radial-gradient(ellipse 10% 14% at 56% 49%, var(--gold) 0%, var(--gold) 99%, transparent 100%),
+      radial-gradient(ellipse 6% 8% at 76% 30%, var(--gold) 0%, var(--gold) 99%, transparent 100%),
+      radial-gradient(ellipse 8% 12% at 76% 55%, var(--gold) 0%, var(--gold) 99%, transparent 100%);
+  }
+
+  .hero-bg {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    background:
+      linear-gradient(to right, rgba(0,0,0,0.88) 0%, rgba(0,0,0,0.6) 50%, rgba(0,0,0,0.3) 100%),
+      linear-gradient(to top, rgba(0,0,0,0.85) 0%, rgba(0,0,0,0.2) 60%, transparent 100%);
+  }
+
+  .hero-content {
+    position: relative;
+    z-index: 2;
+    padding: 0 6% 8vh;
+    max-width: 900px;
+  }
+
+  .show-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(3.5rem, 9vw, 8rem);
+    letter-spacing: 0.04em;
+    line-height: 0.95;
+    background: linear-gradient(135deg, #E8B84B 0%, #C9922A 40%, #8a6218 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    animation: fadeUp 1s ease 0.2s both;
+  }
+
+  .tagline {
+    font-family: 'Barlow', sans-serif;
+    font-weight: 500;
+    letter-spacing: 0.25em;
+    font-size: clamp(0.65rem, 1.5vw, 0.9rem);
+    color: var(--muted);
+    text-transform: uppercase;
+    margin-top: 0.5rem;
+    margin-bottom: 2.5rem;
+    animation: fadeUp 1s ease 0.4s both;
+  }
+
+  .hero-headline {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(2.8rem, 7vw, 6rem);
+    line-height: 0.92;
+    letter-spacing: 0.02em;
+    animation: fadeUp 1s ease 0.6s both;
+  }
+
+  .hero-headline .white {
+    color: #fff;
+  }
+
+  .hero-headline .gold {
+    color: var(--gold-light);
+  }
+
+  .hero-body {
+    margin-top: 2rem;
+    max-width: 460px;
+    font-size: clamp(0.9rem, 1.8vw, 1.05rem);
+    line-height: 1.7;
+    color: #b8ac9c;
+    animation: fadeUp 1s ease 0.8s both;
+  }
+
+  .hero-badge {
+    position: absolute;
+    right: 6%;
+    bottom: 12vh;
+    z-index: 3;
+    width: clamp(120px, 15vw, 180px);
+    height: clamp(120px, 15vw, 180px);
+    border-radius: 50%;
+    border: 2px solid var(--gold);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 1.2rem;
+    background: rgba(10,8,3,0.85);
+    animation: fadeIn 1.2s ease 1s both;
+    box-shadow: 0 0 40px rgba(201,146,42,0.2), inset 0 0 30px rgba(201,146,42,0.04);
+  }
+
+  .hero-badge .b1 {
+    font-size: clamp(0.55rem, 1.2vw, 0.7rem);
+    font-weight: 500;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+
+  .hero-badge .b2 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(1.1rem, 2.5vw, 1.6rem);
+    color: var(--gold-light);
+    line-height: 1;
+    margin: 0.2rem 0;
+  }
+
+  .hero-badge .b3 {
+    font-size: clamp(0.55rem, 1.2vw, 0.7rem);
+    color: #888;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+  }
+
+  .scroll-cue {
+    position: absolute;
+    bottom: 3vh;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 5;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+    opacity: 0.4;
+    animation: fadeIn 2s ease 1.5s both;
+  }
+
+  .scroll-cue span {
+    font-size: 0.6rem;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--gold);
+  }
+
+  .scroll-line {
+    width: 1px;
+    height: 40px;
+    background: linear-gradient(to bottom, var(--gold), transparent);
+    animation: scrollPulse 2s ease infinite;
+  }
+
+  .torn {
+    width: 100%;
+    height: 60px;
+    background: var(--mid);
+    clip-path: polygon(0 40%, 5% 20%, 10% 50%, 15% 10%, 20% 45%, 25% 5%, 30% 40%, 35% 15%, 40% 50%, 45% 20%, 50% 55%, 55% 10%, 60% 45%, 65% 15%, 70% 50%, 75% 5%, 80% 40%, 85% 20%, 90% 50%, 95% 15%, 100% 40%, 100% 100%, 0 100%);
+    margin-top: -2px;
+  }
+
+  /* STEPS */
+  .steps {
+    background: var(--mid);
+    padding: 6rem 6% 5rem;
+  }
+
+  .section-label {
+    text-align: center;
+    font-size: 0.7rem;
+    letter-spacing: 0.35em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 1rem;
+    position: relative;
+  }
+
+  .section-label::before,
+  .section-label::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    width: 25%;
+    height: 1px;
+    background: linear-gradient(to right, transparent, var(--gold-dim));
+  }
+
+  .section-label::before {
+    left: 5%;
+  }
+
+  .section-label::after {
+    right: 5%;
+    background: linear-gradient(to left, transparent, var(--gold-dim));
+  }
+
+  .steps-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2px;
+    max-width: 860px;
+    margin: 3.5rem auto 0;
+  }
+
+  .step {
+    background: var(--dark);
+    padding: 3rem 2rem;
+    text-align: center;
+    position: relative;
+    transition: transform 0.3s ease, background 0.3s ease;
+    cursor: default;
+  }
+
+  .step:hover {
+    background: #161410;
+    transform: translateY(-4px);
+  }
+
+  .step-num {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 4rem;
+    color: rgba(201,146,42,0.08);
+    position: absolute;
+    top: 1rem;
+    left: 50%;
+    transform: translateX(-50%);
+    line-height: 1;
+    pointer-events: none;
+  }
+
+  .step-icon {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    border: 1.5px solid var(--gold);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 1.5rem;
+    position: relative;
+    z-index: 1;
+  }
+
+  .step-icon svg {
+    width: 24px;
+    height: 24px;
+    fill: var(--gold-light);
+  }
+
+  .step-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.3rem;
+    letter-spacing: 0.08em;
+    color: var(--gold-light);
+    margin-bottom: 0.75rem;
+  }
+
+  .step-text {
+    font-size: 0.88rem;
+    line-height: 1.7;
+    color: var(--muted);
+  }
+
+  /* CTA */
+  .cta-banner {
+    background: linear-gradient(135deg, #1a1204 0%, #0a0a0a 100%);
+    border-top: 1px solid rgba(201,146,42,0.2);
+    border-bottom: 1px solid rgba(201,146,42,0.2);
+    padding: 4rem 6%;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .cta-banner::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse 60% 100% at 50% 50%, rgba(201,146,42,0.05) 0%, transparent 70%);
+  }
+
+  .cta-banner h2 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(2rem, 5vw, 3.5rem);
+    letter-spacing: 0.05em;
+    color: #fff;
+    position: relative;
+    z-index: 1;
+  }
+
+  .cta-banner p {
+    font-size: clamp(0.9rem, 1.8vw, 1rem);
+    color: var(--muted);
+    margin: 1rem 0 2.5rem;
+    position: relative;
+    z-index: 1;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+  }
+
+  .cta-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.75rem;
+    background: var(--gold);
+    color: #0a0a0a;
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.1rem;
+    letter-spacing: 0.15em;
+    padding: 1rem 2.5rem;
+    text-decoration: none;
+    border: 0;
+    cursor: pointer;
+    position: relative;
+    z-index: 1;
+    transition: background 0.2s ease, transform 0.2s ease;
+    clip-path: polygon(0 0, calc(100% - 12px) 0, 100% 12px, 100% 100%, 12px 100%, 0 calc(100% - 12px));
+  }
+
+  .cta-btn:hover {
+    background: var(--gold-light);
+    transform: translateY(-2px);
+  }
+
+  .cta-btn svg {
+    width: 18px;
+    height: 18px;
+    fill: #0a0a0a;
+  }
+
+  .share-options {
+    display: none;
+    position: relative;
+    z-index: 2;
+    margin: 1.25rem auto 0;
+    max-width: 520px;
+    gap: 0.9rem;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+
+  .share-options.active {
+    display: flex;
+  }
+
+  .share-option {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.65rem;
+    min-width: 190px;
+    padding: 0.95rem 1.25rem;
+    border: 1px solid rgba(232,184,75,0.45);
+    background: rgba(10,10,10,0.82);
+    color: var(--text);
+    text-decoration: none;
+    font-family: 'Barlow', sans-serif;
+    font-weight: 500;
+    letter-spacing: 0.06em;
+    transition: background 0.2s ease, transform 0.2s ease, border-color 0.2s ease;
+  }
+
+  .share-option:hover {
+    background: rgba(201,146,42,0.18);
+    border-color: var(--gold-light);
+    transform: translateY(-2px);
+  }
+
+  .share-option svg {
+    width: 18px;
+    height: 18px;
+    fill: var(--gold-light);
+  }
+
+  /* FOOTER */
+  footer {
+    background: #0d0b07;
+    padding: 2.5rem 6%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 1.5rem;
+    border-top: 1px solid rgba(201,146,42,0.15);
+  }
+
+  .footer-brand {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.5rem;
+    background: linear-gradient(135deg, #E8B84B, #C9922A);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    letter-spacing: 0.06em;
+  }
+
+  .footer-contact {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+    font-size: 0.82rem;
+    color: var(--muted);
+  }
+
+  .footer-contact a {
+    color: var(--muted);
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    transition: color 0.2s;
+  }
+
+  .footer-contact a:hover {
+    color: var(--gold-light);
+  }
+
+  .footer-contact svg {
+    width: 14px;
+    height: 14px;
+    fill: var(--gold-dim);
+    flex-shrink: 0;
+  }
+
+  .footer-social-wrap {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 1rem;
+  }
+
+  .footer-social {
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+  }
+
+  .footer-social a {
+    width: 38px;
+    height: 38px;
+    border: 1px solid var(--gold-dim);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--gold-dim);
+    text-decoration: none;
+    font-size: 0.7rem;
+    font-weight: 600;
+    letter-spacing: 0.05em;
+    transition: all 0.2s ease;
+  }
+
+  .footer-social a:hover {
+    border-color: var(--gold-light);
+    color: var(--gold-light);
+    background: rgba(201,146,42,0.08);
+    transform: translateY(-2px);
+  }
+
+  .footer-social svg {
+    width: 18px;
+    height: 18px;
+    fill: currentColor;
+    display: block;
+  }
+
+  .footer-tagline {
+    font-size: 0.65rem;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: #444;
+    text-align: right;
+  }
+
+  /* ANIMATIONS */
+  @keyframes fadeUp {
+    from {
+      opacity: 0;
+      transform: translateY(30px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+
+  @keyframes scrollPulse {
+    0%, 100% {
+      opacity: 0.4;
+      transform: scaleY(1);
+    }
+    50% {
+      opacity: 1;
+      transform: scaleY(1.2);
+    }
+  }
+
+  body::after {
+    content: '';
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 9999;
+    opacity: 0.025;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    background-size: 200px 200px;
+  }
+
+  @media (max-width: 700px) {
+    .steps-grid {
+      grid-template-columns: 1fr;
+      gap: 2px;
+    }
+
+    .hero-badge {
+      display: none;
+    }
+
+    .section-label::before,
+    .section-label::after {
+      width: 10%;
+    }
+
+    footer {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+
+    .footer-social-wrap {
+      align-items: flex-start;
+    }
+
+    .footer-tagline {
+      text-align: left;
+    }
+  }
+</style>
+</head>
+
+<body>
+
+<section class="hero">
+  <div class="silhouettes"></div>
+  <div class="hero-bg"></div>
+
+  <div class="hero-content">
+    <div class="show-title">Izinto Zomoya</div>
+    <div class="tagline">Real People &nbsp;·&nbsp; Real Stories &nbsp;·&nbsp; Real Impact</div>
+
+    <h1 class="hero-headline">
+      <span class="white">Share<br>Your Story.<br></span>
+      <span class="gold">Be Part of<br>the Show.</span>
+    </h1>
+
+    <p class="hero-body">
+      Have you experienced ukuthwasa, ukuthwala, or witchcraft?<br>
+      Whether you've practised it, lived through it, or been affected by it.
+      Your story deserves to be heard.
+    </p>
+  </div>
+
+  <div class="hero-badge">
+    <span class="b1">Your Story</span>
+    <span class="b2">Matters—<br>and it<br>Deserves<br>to be</span>
+    <span class="b3">Heard.</span>
+  </div>
+
+  <div class="scroll-cue">
+    <span>Get Involved</span>
+    <div class="scroll-line"></div>
+  </div>
+</section>
+
+<div class="torn"></div>
+
+<section class="steps">
+  <p class="section-label">Here's How to Get Involved</p>
+
+  <div class="steps-grid">
+    <div class="step">
+      <div class="step-num">1</div>
+      <div class="step-icon">
+        <svg viewBox="0 0 24 24"><path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm0 14H5.2L4 17.2V4h16v12z"/><circle cx="8" cy="10" r="1.5"/><circle cx="12" cy="10" r="1.5"/><circle cx="16" cy="10" r="1.5"/></svg>
+      </div>
+      <div class="step-title">Tell Us Your Story</div>
+      <p class="step-text">Reach out and share the experience that has shaped your life. No story is too big or too small.</p>
+    </div>
+
+    <div class="step">
+      <div class="step-num">2</div>
+      <div class="step-icon">
+        <svg viewBox="0 0 24 24"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3zm-1 3a1 1 0 0 1 2 0v8a1 1 0 0 1-2 0V4zm-4 8a5 5 0 0 0 10 0h2a7 7 0 0 1-6 6.92V21h2v2H9v-2h2v-2.08A7 7 0 0 1 5 12H7z"/></svg>
+      </div>
+      <div class="step-title">Send a Voice Note or Text</div>
+      <p class="step-text">Text a summary or send a voice note — no longer than 2 minutes — describing your story.</p>
+    </div>
+
+    <div class="step">
+      <div class="step-num">3</div>
+      <div class="step-icon">
+        <svg viewBox="0 0 24 24"><path d="M21 3H3c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h5v2h8v-2h5c1.1 0 1.99-.9 1.99-2L23 5c0-1.1-.9-2-2-2zm0 14H3V5h18v12zM10 8l6 4-6 4V8z"/></svg>
+      </div>
+      <div class="step-title">Be Featured on TV</div>
+      <p class="step-text">We will contact you and you could be featured on the television show — reaching audiences across South Africa.</p>
+    </div>
+  </div>
+</section>
+
+<section class="cta-banner">
+  <h2>Your Story Could Change a Life.</h2>
+  <p>Don't just watch. Be part of the conversation.</p>
+
+  <button type="button" class="cta-btn" id="shareStoryBtn" aria-expanded="false" aria-controls="shareOptions">
+    <svg viewBox="0 0 24 24"><path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11A2.99 2.99 0 1 0 15 5c0 .24.04.47.09.7L8.04 9.81A2.99 2.99 0 1 0 8.04 14.2l7.12 4.18c-.04.2-.06.41-.06.62a2.9 2.9 0 1 0 2.9-2.92z"/></svg>
+    Share Your Story
+  </button>
+
+  <div class="share-options" id="shareOptions" aria-label="Choose how to send your story">
+    <a class="share-option" href="https://wa.me/27603686009?text=Hi%20Izinto%20Zomoya%2C%20I%20would%20like%20to%20share%20my%20story." target="_blank" rel="noopener">
+      <svg viewBox="0 0 24 24"><path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.75.46 3.45 1.32 4.95L2 22l5.27-1.38a9.9 9.9 0 0 0 4.77 1.22h.01c5.46 0 9.91-4.45 9.91-9.91S17.5 2 12.04 2zm5.77 14.15c-.24.68-1.22 1.25-1.97 1.42-.53.11-1.22.2-3.55-.76-2.98-1.23-4.9-4.25-5.05-4.45-.14-.2-1.2-1.6-1.2-3.05s.76-2.17 1.03-2.47c.24-.27.64-.39 1.02-.39.12 0 .23.01.33.01.29.01.44.03.63.48.24.58.81 1.99.88 2.14.07.15.12.35.02.55-.09.21-.14.33-.29.51-.15.17-.31.38-.44.51-.15.15-.3.31-.13.61.17.29.75 1.24 1.61 2.01 1.11.99 2.04 1.3 2.34 1.45.29.15.47.13.65-.08.2-.24.75-.87.95-1.17.2-.29.4-.24.68-.15.29.1 1.82.86 2.13 1.01.31.15.51.22.59.34.07.12.07.7-.17 1.38z"/></svg>
+      Send on WhatsApp
+    </a>
+
+    <a class="share-option" href="mailto:submissions@izintozomoya.co.za?subject=Izinto%20Zomoya%20Story%20Submission&body=Hi%20Izinto%20Zomoya%2C%0A%0AI%20would%20like%20to%20share%20my%20story.%0A%0AName%3A%0APhone%3A%0AStory%3A">
+      <svg viewBox="0 0 24 24"><path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>
+      Send by Email
+    </a>
+  </div>
+</section>
+
+<footer>
+  <div class="footer-brand">Izinto Zomoya</div>
+
+  <div class="footer-contact">
+    <a href="mailto:submissions@izintozomoya.co.za">
+      <svg viewBox="0 0 24 24"><path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>
+      submissions@izintozomoya.co.za
+    </a>
+
+    <a href="tel:0603686009">
+      <svg viewBox="0 0 24 24"><path d="M6.6 10.8c1.4 2.8 3.8 5.1 6.6 6.6l2.2-2.2c.3-.3.7-.4 1-.2 1.1.4 2.3.6 3.6.6.6 0 1 .4 1 1V20c0 .6-.4 1-1 1-9.4 0-17-7.6-17-17 0-.6.4-1 1-1h3.5c.6 0 1 .4 1 1 0 1.3.2 2.5.6 3.6.1.3 0 .7-.2 1L6.6 10.8z"/></svg>
+      060 368 6009
+    </a>
+  </div>
+
+  <div class="footer-social-wrap">
+    <div class="footer-social" aria-label="Social media links">
+      <a href="https://www.facebook.com/" target="_blank" rel="noopener" aria-label="Facebook" title="Facebook">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M22 12.06C22 6.5 17.52 2 12 2S2 6.5 2 12.06c0 5.02 3.66 9.18 8.44 9.94v-7.03H7.9v-2.91h2.54V9.84c0-2.52 1.49-3.91 3.77-3.91 1.09 0 2.24.2 2.24.2v2.48h-1.26c-1.24 0-1.63.78-1.63 1.57v1.88h2.78l-.44 2.91h-2.34V22C18.34 21.24 22 17.08 22 12.06z"/></svg>
+      </a>
+
+      <a href="https://www.instagram.com/" target="_blank" rel="noopener" aria-label="Instagram" title="Instagram">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7.75 2h8.5A5.76 5.76 0 0 1 22 7.75v8.5A5.76 5.76 0 0 1 16.25 22h-8.5A5.76 5.76 0 0 1 2 16.25v-8.5A5.76 5.76 0 0 1 7.75 2zm0 2A3.75 3.75 0 0 0 4 7.75v8.5A3.75 3.75 0 0 0 7.75 20h8.5A3.75 3.75 0 0 0 20 16.25v-8.5A3.75 3.75 0 0 0 16.25 4h-8.5zm8.75 2.1a1.4 1.4 0 1 1 0 2.8 1.4 1.4 0 0 1 0-2.8zM12 7a5 5 0 1 1 0 10 5 5 0 0 1 0-10zm0 2a3 3 0 1 0 0 6 3 3 0 0 0 0-6z"/></svg>
+      </a>
+
+      <a href="https://www.tiktok.com/" target="_blank" rel="noopener" aria-label="TikTok" title="TikTok">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M16.6 2c.35 2.28 1.63 3.64 3.9 3.78v3.07a7.03 7.03 0 0 1-3.83-1.16v6.93c0 3.51-2.16 5.38-5.02 5.38-3.2 0-5.15-2.09-5.15-4.77 0-2.95 2.3-4.8 5.18-4.8.38 0 .75.04 1.1.12v3.16a3.1 3.1 0 0 0-1.1-.2c-1.25 0-2.15.72-2.15 1.72 0 1.08.86 1.72 1.98 1.72 1.32 0 2.05-.67 2.05-2.29V2h3.04z"/></svg>
+      </a>
+
+      <a href="https://wa.me/27603686009" target="_blank" rel="noopener" aria-label="WhatsApp" title="WhatsApp">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.75.46 3.45 1.32 4.95L2 22l5.27-1.38a9.9 9.9 0 0 0 4.77 1.22h.01c5.46 0 9.91-4.45 9.91-9.91S17.5 2 12.04 2zm5.77 14.15c-.24.68-1.22 1.25-1.97 1.42-.53.11-1.22.2-3.55-.76-2.98-1.23-4.9-4.25-5.05-4.45-.14-.2-1.2-1.6-1.2-3.05s.76-2.17 1.03-2.47c.24-.27.64-.39 1.02-.39.12 0 .23.01.33.01.29.01.44.03.63.48.24.58.81 1.99.88 2.14.07.15.12.35.02.55-.09.21-.14.33-.29.51-.15.17-.31.38-.44.51-.15.15-.3.31-.13.61.17.29.75 1.24 1.61 2.01 1.11.99 2.04 1.3 2.34 1.45.29.15.47.13.65-.08.2-.24.75-.87.95-1.17.2-.29.4-.24.68-.15.29.1 1.82.86 2.13 1.01.31.15.51.22.59.34.07.12.07.7-.17 1.38z"/></svg>
+      </a>
+    </div>
+
+    <div class="footer-tagline">Follow &nbsp;·&nbsp; Watch &nbsp;·&nbsp; Engage</div>
+  </div>
+</footer>
+
+<script>
+  const steps = document.querySelectorAll('.step');
+
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach((e, i) => {
+      if (e.isIntersecting) {
+        setTimeout(() => {
+          e.target.style.opacity = '1';
+          e.target.style.transform = 'translateY(0)';
+        }, i * 120);
+
+        io.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.2 });
+
+  steps.forEach((s) => {
+    s.style.opacity = '0';
+    s.style.transform = 'translateY(20px)';
+    s.style.transition = 'opacity 0.6s ease, transform 0.6s ease, background 0.3s ease';
+    io.observe(s);
+  });
+
+  const shareStoryBtn = document.getElementById('shareStoryBtn');
+  const shareOptions = document.getElementById('shareOptions');
+
+  if (shareStoryBtn && shareOptions) {
+    shareStoryBtn.addEventListener('click', () => {
+      const isOpen = shareOptions.classList.toggle('active');
+      shareStoryBtn.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+    });
+  }
+</script>
+
+</body>
+</html>
